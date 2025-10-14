@@ -1,0 +1,23 @@
+name: Multi-step (no sequence)
+on:
+  push:
+
+jobs:
+  multistep-nosq:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Data e usuário
+        run: |
+          echo "Data (São Paulo):"
+          TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z"
+          echo "Actor: ${{ github.actor }}"
+
+      - name: Contagem global de arquivos por extensão
+        run: |
+          HTML=$(find . -type f -iname "*.html" | wc -l)
+          CSS=$(find . -type f -iname "*.css" | wc -l)
+          JS=$(find . -type f -iname "*.js" | wc -l)
+          echo "Contagem TOTAL atual: HTML=$HTML | CSS=$CSS | JS=$JS"
