@@ -1,0 +1,14 @@
+name: Hello World Action
+on:
+  push:
+    paths:
+      - '**/*'
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello - checkout
+        uses: actions/checkout@v4
+      - name: Print Hello World
+        run: |
+          echo "Hello World!"
