@@ -1,0 +1,26 @@
+name: Night-only Scheduler (executa tarefas somente à noite)
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # roda a cada 30 minutos, mas as tasks só rodarão se for noite em SP
+  workflow_dispatch:
+
+jobs:
+  night-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar horario (America/Sao_Paulo)
+        run: |
+          HOUR=$(TZ="America/Sao_Paulo" date +%H)
+          echo "Hora em São Paulo: $HOUR"
+          # Definindo noite como 18..23 e 0..5
+          if [ "$HOUR" -ge 18 ] || [ "$HOUR" -le 5 ]; then
+            echo "É noite — prosseguindo com job."
+          else
+            echo "Não é noite. Saindo sem executar tarefas."
+            exit 0
+          fi
+
+      - name: Tarefa noturna exemplo
+        run: |
+          echo "Executando tarefa noturna: registro de horário"
+          TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z"
