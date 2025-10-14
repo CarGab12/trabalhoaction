@@ -1,0 +1,30 @@
+name: Create README if missing
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+permissions:
+  contents: write  
+
+jobs:
+  create-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Criar README.md se não existir
+        run: |
+          if [ -f README.md ]; then
+            echo "README.md já existe - saindo."
+            exit 0
+          fi
+          echo "# Projeto de Exemplo - GitHub Actions" > README.md
+          echo "" >> README.md
+          echo "Este README foi criado automaticamente pela action em `04-create-readme.yml`." >> README.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: adicionar README criado por action"
+          git push
