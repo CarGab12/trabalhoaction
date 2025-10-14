@@ -1,0 +1,19 @@
+name: Listar arquivos
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  list-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Listar todos os arquivos
+        run: |
+          echo "Arquivos encontrados no repositório:"
+          ls -lah
