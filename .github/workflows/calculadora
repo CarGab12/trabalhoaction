@@ -1,29 +1,16 @@
-name: Calc, List & Count HTML
+name: Calcular 2 + 2
+
 on:
-  workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  actions-demo:
+  calc-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Calcular 2+2 em variável e imprimir
+      - name: Calcular 2 + 2
         run: |
-          RESULT=$((2 + 2))
-          echo "Variável RESULT = $RESULT"
-          # Exporta para o log de output (opcional)
-          echo "::set-output name=result::$RESULT"
-
-      - name: Listar arquivos do repo
-        run: |
-          echo "Arquivos no repo:"
-          ls -la
-
-      - name: Contar arquivos .html
-        run: |
-          COUNT_HTML=$(find . -maxdepth 2 -type f -iname "*.html" | wc -l)
-          echo "Quantidade de arquivos .html: $COUNT_HTML"
+          RESULT=$((2+2))
+          echo "O resultado da soma 2 + 2 é: $RESULT"
