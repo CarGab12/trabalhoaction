@@ -1,0 +1,40 @@
+name: Multi-step (sequence)
+on:
+  push:
+
+jobs:
+  multistep-seq:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Data (SP)
+        run: |
+          echo "Data/Hora (São Paulo):"
+          TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z"
+
+      - name: Usuário do push
+        run: |
+          echo "Actor: ${{ github.actor }}"
+          echo "Pusher name: ${{ github.event.pusher.name || 'não disponível' }}"
+
+      - name: Arquivos alterados neste push (em sequência)
+        run: |
+          # tenta determinar os arquivos do último commit
+          echo "Arquivos no último commit (ordem do git diff):"
+          git fetch --depth=2 origin ${{ github.ref }}
+          # compara sha anterior com atual
+          PREV="${{ github.sha }}^"
+          git --no-pager diff --name-only "${PREV}" "${{ github.sha }}" || git --no-pager show --name-only --pretty="" "${{ github.sha }}"
+          # exporta lista
+      - name: Contar .html .css .js enviados (em sequência)
+        run: |
+          LIST=$(git --no-pager diff --name-only "${{ github.sha }}^" "${{ github.sha }}" || git --no-pager show --name-only --pretty="" "${{ github.sha }}")
+          echo "$LIST"
+          HTML=$(echo "$LIST" | grep -i '\.html$' | wc -l || true)
+          CSS=$(echo "$LIST" | grep -i '\.css$' | wc -l || true)
+          JS=$(echo "$LIST" | grep -i '\.js$' | wc -l || true)
+          echo "Enviados neste commit — HTML: $HTML | CSS: $CSS | JS: $JS"
