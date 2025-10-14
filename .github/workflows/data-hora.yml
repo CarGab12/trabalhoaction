@@ -15,10 +15,3 @@ jobs:
         run: |
           echo "=== Data/Hora (America/Sao_Paulo) ==="
           TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z"
-
-      - name: Mostrar usuário do push
-        run: |
-          echo "=== Informações do Push ==="
-          echo "Actor: ${{ github.actor }}"
-          echo "Pusher: ${{ github.event.pusher.name }}"
-          echo "Email: ${{ github.event.pusher.email }}"
