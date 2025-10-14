@@ -1,7 +1,9 @@
 name: Push Info (data/hora + usuário)
+
 on:
   push:
-    types: [created, pushed]
+  workflow_dispatch:
+
 jobs:
   push-info:
     runs-on: ubuntu-latest
@@ -14,9 +16,9 @@ jobs:
           echo "=== Data/Hora (America/Sao_Paulo) ==="
           TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z"
 
-      - name: Mostrar usuário do push (pusher / committer)
+      - name: Mostrar usuário do push
         run: |
-          echo "=== Usuário do evento GitHub ==="
+          echo "=== Informações do Push ==="
           echo "Actor: ${{ github.actor }}"
-          echo "Pusher (do commit): ${{ github.event.pusher.name || 'não disponível' }}"
-          echo "Pusher email: ${{ github.event.pusher.email || 'não disponível' }}"
+          echo "Pusher: ${{ github.event.pusher.name }}"
+          echo "Email: ${{ github.event.pusher.email }}"
