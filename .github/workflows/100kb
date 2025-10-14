@@ -1,0 +1,23 @@
+name: Size Alert (>100KB)
+on:
+  push:
+    paths: ['**/*']
+
+jobs:
+  size-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Procurar arquivos maiores que 100KB
+        run: |
+          echo "Buscando arquivos maiores que 100 KB..."
+          FOUND=$(find . -type f -size +100k -not -path "./.git/*" -print)
+          if [ -z "$FOUND" ]; then
+            echo "Nenhum arquivo >100KB encontrado."
+          else
+            echo "ATENÇÃO: arquivos >100KB encontrados:"
+            echo "$FOUND"
+            # falha o job pra chamar atenção (prof pode ver o erro)
+            exit 1
+          fi
