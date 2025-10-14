@@ -1,0 +1,25 @@
+name: Midnight Count (meia-noite SP)
+on:
+  schedule:
+    - cron: '*/15 * * * *'  
+  workflow_dispatch:
+
+jobs:
+  midnight-count:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar se é meia-noite em SP
+        run: |
+          HOUR=$(TZ="America/Sao_Paulo" date +%H)
+          MIN=$(TZ="America/Sao_Paulo" date +%M)
+          echo "Hora em SP: $HOUR:$MIN"
+          if [ "$HOUR" -eq 0 ] && [ "$MIN" -lt 15 ]; then
+            echo "É meia-noite (ou próximo) — executando contagem."
+          else
+            echo "Não é meia-noite em SP — saindo."
+            exit 0
+          fi
+      - name: Contar arquivos totais no repo
+        run: |
+          TOTAL=$(find . -type f -not -path "./.git/*" | wc -l)
+          echo "Total de arquivos no repositório: $TOTAL"
