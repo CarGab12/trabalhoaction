@@ -23,13 +23,10 @@ jobs:
 
       - name: Arquivos alterados neste push (em sequência)
         run: |
-          # tenta determinar os arquivos do último commit
           echo "Arquivos no último commit (ordem do git diff):"
           git fetch --depth=2 origin ${{ github.ref }}
-          # compara sha anterior com atual
           PREV="${{ github.sha }}^"
           git --no-pager diff --name-only "${PREV}" "${{ github.sha }}" || git --no-pager show --name-only --pretty="" "${{ github.sha }}"
-          # exporta lista
       - name: Contar .html .css .js enviados (em sequência)
         run: |
           LIST=$(git --no-pager diff --name-only "${{ github.sha }}^" "${{ github.sha }}" || git --no-pager show --name-only --pretty="" "${{ github.sha }}")
